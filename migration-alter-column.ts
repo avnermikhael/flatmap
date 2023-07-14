@@ -6,23 +6,25 @@ export const databasePath = __dirname;
 
 export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.sequelize.transaction(async (transaction) => {
-    await queryInterface.addIndex('OrderPayment', ['PaymentUserExpiredDate'], {
-      transaction,
-      where: {
-        IsDeleted: false,
-        DeletedAt: null,
+    await queryInterface.changeColumn(
+      'Appointments',
+      'EventId',
+      {
+        type: DataType.STRING(255),
       },
-    });
+      { transaction },
+    );
   });
 };
 export const down: Migration = async ({ context: queryInterface }) => {
   await queryInterface.sequelize.transaction(async (transaction) => {
-    await queryInterface.removeIndex('OrderPayment', ['PaymentUserExpiredDate'], {
-      transaction,
-      where: {
-        IsDeleted: false,
-        DeletedAt: null,
+    await queryInterface.changeColumn(
+      'Appointments',
+      'EventId',
+      {
+        type: DataType.STRING(50),
       },
-    });
+      { transaction },
+    );
   });
 };
